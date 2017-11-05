@@ -4,45 +4,56 @@ import "fmt"
 import "os"
 import "math"
 import "strconv"
+import "math/rand"
+import "time"
 
 func forced(cnt2 uint64) {
 	var prev uint64 = 1
 	var prevprev uint64 = 1
-	var cnt uint64 = 0
+	var cnt uint64
 	for i := uint64(1); i <= cnt2; i += prevprev {
-		cnt += 1
+		cnt++
 		prevprev = prev
 		prev = i
 		fmt.Println(i)
 		if cnt2 == i {
-			fmt.Printf("Number % is % in fibonachi ordering numbers\n", cnt2, cnt)
+			fmt.Printf("Число %d является %d-ым числом фибоначи", cnt2, cnt)
+			break
 		}
 	}
+	fmt.Printf("Число %d не является числом фибоначи\n", cnt2)
 }
 
 func correct(cnt2 uint64) {
-	var cnt float64 = float64(cnt2)
-	var plus float64 = math.Sqrt(5*cnt*cnt + 4)
-	var minus float64 = math.Sqrt(5*cnt*cnt - 4)
-	var pplus = float64(uint64(plus))
-	var pminus = float64(uint64(minus))
-	if plus-pplus == 0 || minus-pminus == 0 {
-		fmt.Printf("Number % is % in fibonachi ordering numbers\n", cnt2, cnt)
+	cnt := float64(cnt2)
+	plus := math.Sqrt(5*cnt*cnt + 4)
+	minus := math.Sqrt(5*cnt*cnt - 4)
+	if plus-float64(uint64(plus)) == 0 || minus-float64(uint64(minus)) == 0 {
+		fmt.Printf("Число %d является числом фибоначи\n", cnt2)
 	} else {
-		fmt.Printf("Number is not in  fibonachi ordering numbers\n")
+		fmt.Printf("Число %d не является числом фибоначи\n", cnt2)
 	}
 }
 
 func main() {
+	var number uint64
 	if len(os.Args) <= 1 {
-		fmt.Printf("not enough params \n")
-		return
-	}
-	cnt2, err := strconv.ParseUint(os.Args[1], 10, 64)
-	if err == nil {
+		fmt.Println("Не хватает параметров в вызове команды")
+		fmt.Println("Будет использовано случайное значение")
+		date := time.Now().Unix()
+		rand.Seed(date)
+		number = uint64(rand.Int63())
+	} else {
+		numberIn, err := strconv.ParseUint(os.Args[1], 10, 64)
+		if err != nil {
+			fmt.Println("Что-то пошло не так")
+		}
+		number = numberIn
 	}
 
-	forced(cnt2)
-	correct(cnt2)
+	fmt.Println("Пробуем с числом - ", number)
+	forced(number)
+	fmt.Printf("\n\n")
+	correct(number)
 
 }
