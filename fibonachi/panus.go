@@ -18,7 +18,7 @@ func forced(cnt2 uint64) {
 		fmt.Println(i)
 		if cnt2 == i {
 			fmt.Printf("Число %d является %d-ым числом фибоначи", cnt2, cnt)
-			break
+			return
 		}
 	}
 	fmt.Printf("Число %d не является числом фибоначи\n", cnt2)
